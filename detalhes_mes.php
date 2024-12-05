@@ -1,15 +1,24 @@
 <?php
-// conexap direta com banco de dados
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'controle_gastos';
 
-$conn = new mysqli($host, $user, $pass, $db);
+session_start();
+require_once('conexao.php');
 
-// Verifica se a conexão foi bem-sucedida
-if ($conn->connect_error) {
-    die("A conexão com o banco de dados falhou : " . $conn->connect_error);
+if (isset($_POST['criar_transacao'])) {
+    $nome = $_POST['txtNome'];
+    $categoria = $_POST['txtCategoria'];
+    $data = $_POST['txtData'];
+    $tipo = $_POST['txtTipo'];
+    $valor = $_POST['txtValor'];
+    $mes_id = $_POST['id_mes'];
+
+    $sql = "INSERT INTO movimentacoes (nome, categoria, data, tipo, valor, mes_id) VALUES ('$nome', '$categoria', '$data', '$tipo', '$valor', '$mes_id')";
+
+    if (mysqli_query($conn, $sql)) {
+        header("Location: detalhe_mes.php?id=$mes_id");
+        exit();
+    } else {
+        echo "Erro ao salvar a transação: " . mysqli_error($conn);
+    }
 }
 
 // Consulta para buscar as movimentações do mês selecionado
@@ -42,6 +51,16 @@ $saldo_final = $resumo['entradas'] - $resumo['saidas'];
 
 // Fechar a conexão
 $conn->close();
+
+$transacao = [
+    'nome' => '',
+    'categoria' => '',
+    'data' => '',
+    'tipo' => '',
+    'valor' => ''
+];
+
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -50,6 +69,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes das Movimentações</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -97,45 +117,74 @@ $conn->close();
         </table>
 
         <!-- Botão para adicionar movimentação -->
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAdicionarMovimentacao">Adicionar Movimentação</button>
+        <a class="btn btn-success" href="#modalAdicionarMovimentacao?id=<?= $mes_id ?>" data-bs-toggle="modal" data-bs-target="#modalAdicionarMovimentacao">Adicionar Movimentação</a>
 
-        <!-- Modal -->
-        <div class="modal fade" id="modalAdicionarMovimentacao" tabindex="-1" aria-labelledby="modalAdicionarMovimentacaoLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalAdicionarMovimentacaoLabel">Adicionar Movimentação</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="POST" action="adicionar_movimentacao.php">
-                            <div class="mb-3">
-                                <label for="tipo" class="form-label">Tipo</label>
-                                <select class="form-control" id="tipo" name="tipo" required>
-                                    <option value="Entrada">Entrada</option>
-                                    <option value="Saída">Saída</option>
+
+    <div class="modal fade" id="modalAdicionarMovimentacao" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 text-light" id="exampleModalLabel">Adicionar Movimentação</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-light">
+                    <form action="" method="POST">
+                    <input type="hidden" name="id_mes" value="<?= $_GET['id'] ?>">
+                        <div class="mb-4">
+                            <label for="txtNome">Nome / Descrição</label>
+                            <input type="text" name="txtNome" id="txtNome" value="<?= htmlspecialchars($transacao['nome']) ?>" class="form-control">
+                        </div>
+                        <div class="mb-4">
+                            <label for="txtCategoria">Categoria</label>
+                            <select name="txtCategoria" id="txtCategoria" class="form-control" required>
+                                <option selected disabled>Selecione uma categoria</option>
+                                <option class="text-danger" disabled>Categorias de Saída</option>
+                                <option value="Alimentação" <?= $transacao['categoria'] == 'Alimentação' ? 'selected' : '' ?>>Alimentação</option>
+                                <option value="Transporte" <?= $transacao['categoria'] == 'Transporte' ? 'selected' : '' ?>>Transporte</option>
+                                <option value="Lazer" <?= $transacao['categoria'] == 'Lazer' ? 'selected' : '' ?>>Lazer</option>
+                                <option value="Saúde" <?= $transacao['categoria'] == 'Saúde' ? 'selected' : '' ?>>Saúde</option>
+                                <option value="Compras" <?= $transacao['categoria'] == 'Compras' ? 'selected' : '' ?>>Compras</option>
+                                <option value="Outros" <?= $transacao['categoria'] == 'Outros' ? 'selected' : '' ?>>Educação</option>
+                                <option value="Aplicação em Investimentos" <?= $transacao['categoria'] == 'Aplicação em Investimentos' ? 'selected' : '' ?>>Aplicação em Investimentos</option>
+                                <option value="Serviços" <?= $transacao['categoria'] == 'Serviços' ? 'selected' : '' ?>>Serviços</option>
+                                <option class="text-success" disabled>Categorias de Entrada </option>
+                                <option value="Renda" <?= $transacao['categoria'] == 'Renda' ? 'selected' : '' ?>>Renda</option>
+                                <option value="Renda Extra" <?= $transacao['categoria'] == 'Renda Extra' ? 'selected' : '' ?>>Renda Extra</option>
+                                <option value="Rendimento de Investimentos" <?= $transacao['categoria'] == 'Rendimento de Investimentos' ? 'selected' : '' ?>>Rendimento de Investimentos</option>
+                                <option value="Doação" <?= $transacao['categoria'] == 'Doação' ? 'selected' : '' ?>>Doação</option>
+                                <option value="Prêmio" <?= $transacao['categoria'] == 'Prêmio' ? 'selected' : '' ?>>Prêmio</option>
+                                <option value="Outros" <?= $transacao['categoria'] == 'Outros' ? 'selected' : '' ?>>Outros</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="txtTipo">Tipo</label>
+                                <select name="txtTipo" id="txtTipo" class="form-control" required>
+                                    <option class="text-success" value="Entrada" <?= $transacao['tipo'] == 'Entrada' ? 'selected' : '' ?>>Entrada</option>
+                                    <option class="text-danger" value="Saida" <?= $transacao['tipo'] == 'Saida' ? 'selected' : '' ?>>Saída</option>
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="nome" class="form-label">Nome</label>
-                                <input type="text" class="form-control" id="nome" name="nome" required>
+                            <div class="col">
+                                <label for="txtData">Data</label>
+                                <input type="date" name="txtData" id="txtData" value="<?= htmlspecialchars($transacao['data']) ?>" class="form-control">
+                                <small id="error-msg" class="text-danger"></small>
                             </div>
-                            <div class="mb-3">
-                                <label for="valor" class="form-label">Valor</label>
-                                <input type="number" class="form-control" id="valor" name="valor" required>
+                            <div class="col">
+                                <label for="txtValor">Valor</label>
+                                <input type="number" name="txtValor" id="txtValor" value="<?= htmlspecialchars($transacao['valor']) ?>" class="form-control" step="any">
                             </div>
-                            <div class="mb-3">
-                                <label for="data" class="form-label">Data</label>
-                                <input type="date" class="form-control" id="data" name="data" required>
-                            </div>
-                            <input type="hidden" name="mes_id" value="<?= $mes_id ?>"/>
-                            <button type="submit" class="btn btn-primary">Salvar</button>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="modal-footer mt-4">
+                            <button type="submit" name="criar_transacao" class="btn btn-success">Salvar</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bi bi-x-circle-fill"></i></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+
 
     <script>
         // Dados para o gráfico

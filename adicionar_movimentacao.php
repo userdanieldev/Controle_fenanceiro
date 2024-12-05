@@ -1,9 +1,7 @@
 <?php
-// conexap direta com banco de dados
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'controle_gastos';
+
+session_start();
+require_once('conexao.php');
 
 $conn = new mysqli($host, $user, $pass, $db);
 
@@ -17,11 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mes_id = $_POST['mes_id'];
     $nome = $_POST['nome'];
     $tipo = $_POST['tipo'];
+    $categoria = $_POST['categoria'];
     $valor = $_POST['valor'];
     $data = $_POST['data'];
 
     // Prepara a consulta para inserir os dados na tabela 'movimentacoes'
-    $sql = "INSERT INTO movimentacoes (mes_id, nome, tipo, valor, data) VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO movimentacoes (mes_id, nome, tipo, categoria valor, data) VALUES (?, ?, ?, ?, ?, ?)";
 
     // Usando prepared statement para prevenir SQL injection
     $stmt = $conn->prepare($sql);
