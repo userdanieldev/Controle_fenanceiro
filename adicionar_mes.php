@@ -1,27 +1,29 @@
 <?php
-// Conexão com o banco de dados
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'controle_gastos';
+require_once('conexao.php');
 
 $conn = new mysqli($host, $user, $pass, $db);
 
-// Verifica a conexão
 if ($conn->connect_error) {
-    die("A conexão com o banco de dados falhou " . $conn->connect_error);
+    die("Erro de conexão: " . $conn->connect_error);
 }
 
-// Recebe o nome do mês do formulário
-$nome_mes = $_POST['nome_mes'];
-
-// Insere o novo mês no banco de dados
-$sql = "INSERT INTO mes (nome) VALUES ('$nome_mes')";
-
-if ($conn->query($sql) === TRUE) {
-    echo "<script>alert('Mês adicionado com sucesso!'); window.location.href='index.php';</script>";
+// Insere o novo mês
+if (isset($_POST['nome_mes']) && !empty($_POST['nome_mes'])) {
+    $nome_mes = $conn->real_escape_string($_POST['nome_mes']);
+    $sql = "INSERT INTO mes (nome) VALUES ('$nome_mes')";
+    if ($conn->query($sql) === TRUE) {
+        // Retorna o ID do novo mês e o nome para o front-end
+        echo json_encode([
+            'id' => $conn->insert_id,
+            'nome' => $nome_mes
+        ]);
+    } else {
+        http_response_code(500);
+        echo "Erro ao adicionar mês: " . $conn->error;
+    }
 } else {
-    echo "Erro ao adicionar mês: " . $conn->error;
+    http_response_code(400);
+    echo "Nome do mês não fornecido.";
 }
 
 $conn->close();
