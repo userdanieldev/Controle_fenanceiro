@@ -107,17 +107,7 @@ if (isset($_POST['txtNome'])) {
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Detalhes das Movimentações</h1>
-
-        <!-- Resumo -->
-        <div class="row">
-            <div class="col-md-6">
-                <h5>Entradas: R$ <?= number_format($resumo['entradas'], 2, ',', '.') ?></h5>
-            </div>
-            <div class="col-md-6">
-                <h5>Saídas: R$ <?= number_format($resumo['saidas'], 2, ',', '.') ?></h5>
-            </div>
-        </div>
-
+       
         <!-- Gráfico de barras horizontais com entradas, saídas e saldo -->
         <div>
             <canvas id="graficoMovimentacoes" class="mt-4"></canvas>
@@ -152,8 +142,17 @@ if (isset($_POST['txtNome'])) {
             </tbody>
         </table>
 
-        <!-- Botão para adicionar movimentação -->
-        <a class="btn btn-success" href="#modalAdicionarMovimentacao?id=<?= $mes_id ?>" data-bs-toggle="modal" data-bs-target="#modalAdicionarMovimentacao">Adicionar Movimentação</a>
+    <div class="d-flex justify-content-between mt-4">
+        <!-- Botão Voltar ao Index -->
+        <a href="index.php" class="btn btn-danger">
+            <i class="bi bi-arrow-left-circle-fill"></i> Voltar
+        </a>
+
+        <!-- Botão Adicionar Movimentação -->
+        <a class="btn btn-success" href="#modalAdicionarMovimentacao?id=<?= $mes_id ?>" data-bs-toggle="modal" data-bs-target="#modalAdicionarMovimentacao">
+            <i class="bi bi-plus-circle-fill"></i> Adicionar Movimentação
+        </a>
+    </div>
 
 
         <div class="modal fade" id="modalAdicionarMovimentacao" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
