@@ -43,10 +43,9 @@ if (isset($_POST['editar_transacao'])) {
     exit();
 }
 
-
 // Consulta para buscar as movimentações do mês selecionado
 $mes_id = $_GET['id']; // Pega o ID do mês a partir da URL
-$sql_movimentacoes = "SELECT t.id, t.data, t.tipo, t.nome, t.valor FROM movimentacoes t WHERE t.mes_id = $mes_id";
+$sql_movimentacoes = "SELECT t.id, t.data, t.tipo, t.nome, t.valor, t.categoria FROM movimentacoes t WHERE t.mes_id = $mes_id";
 
 $result_movimentacoes = $conn->query($sql_movimentacoes);
 
@@ -83,18 +82,14 @@ $transacao = [
     'valor' => ''
 ];
 
-
-
 // Verifique se há dados enviados (para edição)
 if (isset($_POST['txtNome'])) {
     $transacao['nome'] = $_POST['txtNome'];
-    $transacao['categoria'] = $_POST['txtCategoria'];
+    $transacao['categoria'] = $_POST['txtCategoria'] ?? '';  // Usando o operador de coalescência nula
     $transacao['data'] = $_POST['txtData'];
     $transacao['tipo'] = $_POST['txtTipo'];
     $transacao['valor'] = $_POST['txtValor'];
 }
-
-
 
 ?>
 <!DOCTYPE html>
@@ -137,6 +132,7 @@ if (isset($_POST['txtNome'])) {
                     <th>Data</th>
                     <th>Tipo</th>
                     <th>Nome</th>
+                    <th>Categoria</th>
                     <th>Valor</th>
                     <th>Ações</th>
                 </tr>
@@ -148,6 +144,7 @@ if (isset($_POST['txtNome'])) {
                         <td><?= date('d/m/Y', strtotime($movimentacao['data'])) ?></td>
                         <td><?= $movimentacao['tipo'] ?></td>
                         <td><?= $movimentacao['nome'] ?></td>
+                        <td><?= $movimentacao['categoria'] ?></td>
                         <td>R$ <?= number_format($movimentacao['valor'], 2, ',', '.') ?></td>
                         <td><a href="#editarMovimentacaoModal_<?= $movimentacao['id'] ?>" class="btn btn-sm btn-outline-dark" data-bs-toggle="modal">Editar</a></td>
                     </tr>
