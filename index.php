@@ -153,15 +153,15 @@ $conn->close();
 <!-- Modal para Adicionar Mês -->
 <div class="modal fade" id="modalAdicionarMes" tabindex="-1" aria-labelledby="modalAdicionarMesLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content bg-dark">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalAdicionarMesLabel">Adicionar Novo Mês</h5>
+                <h5 class="modal-title text-white text-white" id="modalAdicionarMesLabel">Adicionar Novo Mês</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="adicionar_mes.php" method="POST">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="nome_mes" class="form-label">Nome do Mês</label>
+                        <label for="nome_mes" class="form-label text-white">Nome do Mês</label>
                         <input type="text" class="form-control" id="nome_mes" name="nome_mes" placeholder="Ex: Janeiro" required>
                     </div>
                 </div>
@@ -177,13 +177,13 @@ $conn->close();
 <!-- Modal para Excluir Mês -->
 <div class="modal fade" id="modalExcluirMes" tabindex="-1" aria-labelledby="modalExcluirMesLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content bg-dark">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalExcluirMesLabel">Excluir Mês</h5>
+                <h5 class="modal-title text-white" id="modalExcluirMesLabel">Excluir Mês</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="excluir_mes.php" method="POST">
-                <div class="modal-body">
+                <div class="modal-body text-white">
                     <p>Tem certeza de que deseja excluir o mês selecionado?</p>
                     <input type="hidden" id="id_mes_excluir" name="id_mes" value="">
                 </div>
