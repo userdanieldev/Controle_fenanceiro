@@ -3,7 +3,7 @@
 session_start();
 require_once('conexao.php');
 
-if (isset($_POST['criar_transacao'])) {
+if (isset($_POST['criar_movimentacao'])) {
     $nome = $_POST['txtNome'];
     $categoria = $_POST['txtCategoria'];
     $data = $_POST['txtData'];
@@ -21,7 +21,7 @@ if (isset($_POST['criar_transacao'])) {
     }
 }
 
-if (isset($_POST['editar_transacao'])) {
+if (isset($_POST['editar_movimentacao'])) {
     $transacao_id = $_POST['id_movimentacao'];
     $nome = mysqli_real_escape_string($conn, $_POST['txtNome']);
     $categoria = mysqli_real_escape_string($conn, $_POST['txtCategoria']);
@@ -136,7 +136,10 @@ if (isset($_POST['txtNome'])) {
                         <td><?= $movimentacao['nome'] ?></td>
                         <td><?= $movimentacao['categoria'] ?></td>
                         <td>R$ <?= number_format($movimentacao['valor'], 2, ',', '.') ?></td>
-                        <td><a href="#editarMovimentacaoModal_<?= $movimentacao['id'] ?>" class="btn btn-sm btn-outline-dark" data-bs-toggle="modal">Editar</a></td>
+                        <td>
+                            <a href="#editarMovimentacaoModal_<?= $movimentacao['id'] ?>" class="btn btn-sm btn-outline-dark" data-bs-toggle="modal">Editar</a>
+                            <a href="" class="btn-sm btn btn-outline-danger" >Excluir</a>
+                        </td>
                     </tr>
                 <?php } ?>
             </tbody>
@@ -167,7 +170,7 @@ if (isset($_POST['txtNome'])) {
                             <input type="hidden" name="id_mes" value="<?= $_GET['id'] ?>">
                             <div class="mb-4">
                                 <label for="txtNome">Nome / Descrição</label>
-                                <input type="text" name="txtNome" id="txtNome" value="<?= htmlspecialchars($transacao['nome']) ?>" class="form-control">
+                                <input type="text" name="txtNome" id="txtNome" value="<?= htmlspecialchars($transacao['nome']) ?>" class="form-control" placeholder="Insira o nome..." >
                             </div>
                             <div class="mb-4">
                                 <label for="txtCategoria">Categoria</label>
@@ -210,7 +213,7 @@ if (isset($_POST['txtNome'])) {
                                 </div>
                             </div>
                             <div class="modal-footer mt-4">
-                                <button type="submit" name="criar_transacao" class="btn btn-success">Salvar</button>
+                                <button type="submit" name="criar_movimentacao" class="btn btn-success">Salvar</button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bi bi-x-circle-fill"></i></button>
                             </div>
                         </form>
@@ -279,7 +282,7 @@ if (isset($_POST['txtNome'])) {
                                 </div>
 
                                 <div class="modal-footer mt-4">
-                                    <button type="submit" name="editar_transacao" class="btn btn-success">Salvar</button>
+                                    <button type="submit" name="editar_movimentacao" class="btn btn-success">Salvar</button>
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                 </div>
                             </form>
