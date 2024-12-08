@@ -17,6 +17,8 @@ if (isset($_POST['nome_mes']) && !empty($_POST['nome_mes'])) {
             'id' => $conn->insert_id,
             'nome' => $nome_mes
         ]);
+        header("Location: index.php");
+            exit;
     } else {
         http_response_code(500);
         echo "Erro ao adicionar mês: " . $conn->error;
