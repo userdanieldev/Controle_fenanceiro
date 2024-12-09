@@ -82,4 +82,4 @@ Com o desenvolvimento desse sistema, conseguimos:
 
 ## 🎥 Vídeo do Projeto
 
-Assista ao vídeo demonstrativo do **POBRETÃO** no [YouTube]().
+Assista ao vídeo demonstrativo do no [YouTube]().
