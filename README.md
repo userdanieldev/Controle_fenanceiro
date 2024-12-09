@@ -69,13 +69,13 @@ Com o desenvolvimento desse sistema, conseguimos:
 ![Tela Inicial do Sistema](./img/index.jpg)  
 *O index do projeto, basicamente a Home*
 
-![Resumo Mensal]()  
+![Resumo Mensal](./img/tela_mes.jpg)  
 *Descrição das transações mensais de forma detalhada*
 
-![Criar Transação]()  
+![Criar Transação](./img/movimentação.jpg)  
 *Tela de criação de transação*
 
-![Editar Transação]()  
+![Editar Transação](./img/editar.jpg)  
 *Tela que oferece a opção de editar as transações*
 
 ---
