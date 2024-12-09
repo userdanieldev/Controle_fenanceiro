@@ -48,5 +48,11 @@ VALUES
 ('Energia Elétrica', 'Saída', 'Serviços', 200.00, '2024-02-05', 2),
 ('Roupa', 'Saída', 'Compras', 300.00, '2024-02-10', 2),
 ('Investimento', 'Entrada', 'Rendimento de Investimentos', 1000.00, '2024-02-15', 2),
-('Jantar', 'Saída', 'Lazer', 150.00, '2024-02-20', 2);
+('Jantar', 'Saída', 'Lazer', 150.00, '2024-02-20', 2),
 
+-- Dezembro
+('Salário', 'Entrada', 'Renda', 5000.00, '2024-03-10', 3),
+('Conta de Água', 'Saída', 'Serviços', 168.00, '2024-03-05', 3),
+('Roupa', 'Saída', 'Compras', 300.00, '2024-03-10', 3),
+('Investimento', 'Entrada', 'Rendimento de Investimentos', 1000.00, '2024-03-15', 3),
+('Cinema', 'Saída', 'Lazer', 97, '2024-03-20', 3);
