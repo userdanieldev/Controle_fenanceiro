@@ -66,7 +66,7 @@ Com o desenvolvimento desse sistema, conseguimos:
 
 ## 📸 Imagens do Projeto
 
-![Tela Inicial do Sistema]()  
+![Tela Inicial do Sistema](./img/index.jpg)  
 *O index do projeto, basicamente a Home*
 
 ![Resumo Mensal]()  
