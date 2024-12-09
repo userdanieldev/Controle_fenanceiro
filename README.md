@@ -82,4 +82,4 @@ Com o desenvolvimento desse sistema, conseguimos:
 
 ## 🎥 Vídeo do Projeto
 
-Assista ao vídeo demonstrativo do no [YouTube]().
+Assista ao vídeo demonstrativo do no [YouTube](https://youtu.be/AEGyJ8i8RXI).
