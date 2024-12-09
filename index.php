@@ -65,24 +65,22 @@ $conn->close();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
-        /* Estilo padrão dos cards */
         .card-resumo {
             transition: all 0.3s ease-in-out;
             border: 2px solid transparent;
         }
 
-        /* Efeito ao passar o mouse */
         .card-resumo:hover {
             border-color: #fff;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            transform: scale(1.05); /* Leve aumento no tamanho */
+            transform: scale(1.05); 
         }
         #mes {
-            max-width: 100%; /* Largura do select igual ao gráfico */
+            max-width: 100%; 
         }
 
         .d-flex.gap-3 button {
-             width: auto; /* Mantém o tamanho padrão */
+             width: auto; 
         }
 
     </style>
@@ -126,7 +124,7 @@ $conn->close();
     <div class="col-md-12 text-center">
         <h4>Selecione um Mês para ver os detalhes</h4>
         <form action="detalhes_mes.php" method="GET">
-            <!-- Select com largura total -->
+            <!-- Select mes -->
             <div class="mb-4">
                 <select name="id" id="mes" class="form-select w-100" required>
                     <option value="">Escolha o mês...</option>
@@ -136,7 +134,7 @@ $conn->close();
                 </select>
             </div>
 
-            <!-- Botões centralizados -->
+            <!-- Botões -->
             <div class="d-flex justify-content-center gap-3">
                 <button type="submit" class="btn btn-primary">Ver Detalhes</button>
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAdicionarMes">

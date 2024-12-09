@@ -56,7 +56,7 @@ if (isset($_POST['excluir_movimentacao'])) {
 }
 
 // Consulta para buscar as movimentações do mês selecionado
-$mes_id = $_GET['id']; // Pega o ID do mês a partir da URL
+$mes_id = $_GET['id']; 
 $sql_movimentacoes = "SELECT t.id, t.data, t.tipo, t.nome, t.valor, t.categoria FROM movimentacoes t WHERE t.mes_id = $mes_id";
 
 $result_movimentacoes = $conn->query($sql_movimentacoes);
@@ -88,7 +88,7 @@ $conn->close();
 
 $transacao = [
     'nome' => '',
-    'categoria' => isset($_POST['txtCategoria']) ? $_POST['txtCategoria'] : '',  // Garantir que a categoria esteja definida
+    'categoria' => isset($_POST['txtCategoria']) ? $_POST['txtCategoria'] : '',  
     'data' => '',
     'tipo' => '',
     'valor' => ''
@@ -97,7 +97,7 @@ $transacao = [
 // Verifique se há dados enviados (para edição)
 if (isset($_POST['txtNome'])) {
     $transacao['nome'] = $_POST['txtNome'];
-    $transacao['categoria'] = $_POST['txtCategoria'] ?? '';  // Usando o operador de coalescência nula
+    $transacao['categoria'] = $_POST['txtCategoria'] ?? ''; 
     $transacao['data'] = $_POST['txtData'];
     $transacao['tipo'] = $_POST['txtTipo'];
     $transacao['valor'] = $_POST['txtValor'];
@@ -318,20 +318,20 @@ if (isset($_POST['txtNome'])) {
             // Configuração do gráfico de barras horizontais
             var ctx = document.getElementById('graficoMovimentacoes').getContext('2d');
             var chart = new Chart(ctx, {
-                type: 'bar', // Tipo do gráfico
+                type: 'bar', 
                 data: {
-                    labels: ['Entradas', 'Saídas', 'Saldo'], // Labels
+                    labels: ['Entradas', 'Saídas', 'Saldo'], 
                     datasets: [{
                         label: 'Movimentações',
-                        data: [entradas, saidas, saldo_final], // Dados das entradas, saídas e saldo
-                        backgroundColor: ['rgba(40, 167, 69, 0.6)', 'rgba(220, 53, 69, 0.6)', 'rgba(0, 123, 255, 0.6)'], // Cores das barras
-                        borderColor: ['rgba(40, 167, 69, 1)', 'rgba(220, 53, 69, 1)', 'rgba(0, 123, 255, 1)'], // Cores das bordas
+                        data: [entradas, saidas, saldo_final], 
+                        backgroundColor: ['rgba(40, 167, 69, 0.6)', 'rgba(220, 53, 69, 0.6)', 'rgba(0, 123, 255, 0.6)'], 
+                        borderColor: ['rgba(40, 167, 69, 1)', 'rgba(220, 53, 69, 1)', 'rgba(0, 123, 255, 1)'], 
                         borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
-                    indexAxis: 'y', // Mudando a orientação para barras horizontais
+                    indexAxis: 'y', 
                     scales: {
                         x: {
                             beginAtZero: true,

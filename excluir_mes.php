@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_mes'])) {
 
     $conn = new mysqli($host, $user, $pass, $db);
     if ($conn->connect_error) {
-        die("Falha na conexão: " . $conn->connect_error);
+        die("A conexão com o banco de dados falhou " . $conn->connect_error);
     }
 
     // Excluir o mês e suas movimentações relacionadas
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_mes'])) {
     $stmt_mes->close();
     $conn->close();
 
-    header("Location: index.php"); // Redirecionar para a página principal
+    header("Location: index.php"); 
     exit;
 }
 ?>

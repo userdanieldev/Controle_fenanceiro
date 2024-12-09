@@ -27,15 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("issds", $mes_id, $nome, $tipo, $valor, $data);
 
     if ($stmt->execute()) {
-        // Se a inserção for bem-sucedida, redireciona para a página de detalhes do mês
         header("Location: detalhes_mes.php?id=" . $mes_id);
         exit();
     } else {
-        // Se ocorrer um erro, exibe uma mensagem de erro
         echo "Erro ao adicionar movimentação: " . $stmt->error;
     }
 }
 
-// Fechar a conexão
 $conn->close();
 ?>

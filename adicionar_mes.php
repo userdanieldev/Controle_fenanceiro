@@ -4,7 +4,7 @@ require_once('conexao.php');
 $conn = new mysqli($host, $user, $pass, $db);
 
 if ($conn->connect_error) {
-    die("Erro de conexão: " . $conn->connect_error);
+    die("A conexão com o banco de dados falhou " . $conn->connect_error);
 }
 
 // Insere o novo mês
