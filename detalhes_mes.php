@@ -43,6 +43,18 @@ if (isset($_POST['editar_movimentacao'])) {
     exit();
 }
 
+if (isset($_POST['excluir_movimentacao'])) {
+    $movimentacao_id = intval($_POST['excluir_movimentacao']);
+
+    $sql = "DELETE FROM movimentacoes WHERE id = $movimentacao_id";
+    if (mysqli_query($conn, $sql)) {
+        header("Location: index.php");
+        exit();
+    } else {
+        echo "Erro ao excluir a transação.";
+    }
+}
+
 // Consulta para buscar as movimentações do mês selecionado
 $mes_id = $_GET['id']; // Pega o ID do mês a partir da URL
 $sql_movimentacoes = "SELECT t.id, t.data, t.tipo, t.nome, t.valor, t.categoria FROM movimentacoes t WHERE t.mes_id = $mes_id";
@@ -138,7 +150,10 @@ if (isset($_POST['txtNome'])) {
                         <td>R$ <?= number_format($movimentacao['valor'], 2, ',', '.') ?></td>
                         <td>
                             <a href="#editarMovimentacaoModal_<?= $movimentacao['id'] ?>" class="btn btn-sm btn-outline-dark" data-bs-toggle="modal">Editar</a>
-                            <a href="" class="btn-sm btn btn-outline-danger" >Excluir</a>
+                            <form action="" method="POST">
+                            <input type="hidden" name="excluir_movimentacao" value="<?= $movimentacao['id'] ?>">
+                                <button type="submit" class="btn-sm btn btn-outline-danger">Excluir</i></button>
+                            </form>
                         </td>
                     </tr>
                 <?php } ?>
