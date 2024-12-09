@@ -56,7 +56,7 @@ if (isset($_POST['excluir_movimentacao'])) {
 }
 
 // Consulta para buscar as movimentações do mês selecionado
-$mes_id = $_GET['id']; 
+$mes_id = $_GET['id'];
 $sql_movimentacoes = "SELECT t.id, t.data, t.tipo, t.nome, t.valor, t.categoria FROM movimentacoes t WHERE t.mes_id = $mes_id";
 
 $result_movimentacoes = $conn->query($sql_movimentacoes);
@@ -88,7 +88,7 @@ $conn->close();
 
 $transacao = [
     'nome' => '',
-    'categoria' => isset($_POST['txtCategoria']) ? $_POST['txtCategoria'] : '',  
+    'categoria' => isset($_POST['txtCategoria']) ? $_POST['txtCategoria'] : '',
     'data' => '',
     'tipo' => '',
     'valor' => ''
@@ -97,7 +97,7 @@ $transacao = [
 // Verifique se há dados enviados (para edição)
 if (isset($_POST['txtNome'])) {
     $transacao['nome'] = $_POST['txtNome'];
-    $transacao['categoria'] = $_POST['txtCategoria'] ?? ''; 
+    $transacao['categoria'] = $_POST['txtCategoria'] ?? '';
     $transacao['data'] = $_POST['txtData'];
     $transacao['tipo'] = $_POST['txtTipo'];
     $transacao['valor'] = $_POST['txtValor'];
@@ -119,7 +119,7 @@ if (isset($_POST['txtNome'])) {
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Detalhes das Movimentações</h1>
-       
+
         <!-- Gráfico de barras horizontais com entradas, saídas e saldo -->
         <div>
             <canvas id="graficoMovimentacoes" class="mt-4"></canvas>
@@ -127,7 +127,7 @@ if (isset($_POST['txtNome'])) {
 
         <!-- Tabela de movimentações -->
         <h4 class="mt-5">Movimentações</h4>
-        <table class="table table-bordered">
+        <table class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -150,27 +150,24 @@ if (isset($_POST['txtNome'])) {
                         <td>R$ <?= number_format($movimentacao['valor'], 2, ',', '.') ?></td>
                         <td>
                             <a href="#editarMovimentacaoModal_<?= $movimentacao['id'] ?>" class="btn btn-sm btn-outline-dark" data-bs-toggle="modal">Editar</a>
-                            <form action="" method="POST">
-                            <input type="hidden" name="excluir_movimentacao" value="<?= $movimentacao['id'] ?>">
-                                <button type="submit" class="btn-sm btn btn-outline-danger">Excluir</i></button>
-                            </form>
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalExcluirMovimentacao_<?= $movimentacao['id'] ?>">Excluir</button>
                         </td>
                     </tr>
                 <?php } ?>
             </tbody>
         </table>
 
-    <div class="d-flex justify-content-between mt-4">
-        <!-- Botão Voltar ao Index -->
-        <a href="index.php" class="btn btn-danger">
-            <i class="bi bi-arrow-left-circle-fill"></i> Voltar
-        </a>
+        <div class="d-flex justify-content-between mt-4">
+            <!-- Botão Voltar ao Index -->
+            <a href="index.php" class="btn btn-danger">
+                <i class="bi bi-arrow-left-circle-fill"></i> Voltar
+            </a>
 
-        <!-- Botão Adicionar Movimentação -->
-        <a class="btn btn-success" href="#modalAdicionarMovimentacao?id=<?= $mes_id ?>" data-bs-toggle="modal" data-bs-target="#modalAdicionarMovimentacao">
-            <i class="bi bi-plus-circle-fill"></i> Adicionar Movimentação
-        </a>
-    </div>
+            <!-- Botão Adicionar Movimentação -->
+            <a class="btn btn-success" href="#modalAdicionarMovimentacao?id=<?= $mes_id ?>" data-bs-toggle="modal" data-bs-target="#modalAdicionarMovimentacao">
+                <i class="bi bi-plus-circle-fill"></i> Adicionar Movimentação
+            </a>
+        </div>
 
 
         <div class="modal fade" id="modalAdicionarMovimentacao" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -185,7 +182,7 @@ if (isset($_POST['txtNome'])) {
                             <input type="hidden" name="id_mes" value="<?= $_GET['id'] ?>">
                             <div class="mb-4">
                                 <label for="txtNome">Nome / Descrição</label>
-                                <input type="text" name="txtNome" id="txtNome" value="<?= htmlspecialchars($transacao['nome']) ?>" class="form-control" placeholder="Insira o nome..." >
+                                <input type="text" name="txtNome" id="txtNome" value="<?= $transacao['nome'] ?>" class="form-control" placeholder="Insira o nome...">
                             </div>
                             <div class="mb-4">
                                 <label for="txtCategoria">Categoria</label>
@@ -219,12 +216,12 @@ if (isset($_POST['txtNome'])) {
                                 </div>
                                 <div class="col">
                                     <label for="txtData">Data</label>
-                                    <input type="date" name="txtData" id="txtData" value="<?= htmlspecialchars($transacao['data']) ?>" class="form-control">
+                                    <input type="date" name="txtData" id="txtData" value="<?= $transacao['data'] ?>" class="form-control">
                                     <small id="error-msg" class="text-danger"></small>
                                 </div>
                                 <div class="col">
                                     <label for="txtValor">Valor</label>
-                                    <input type="number" name="txtValor" id="txtValor" value="<?= htmlspecialchars($transacao['valor']) ?>" class="form-control" step="any">
+                                    <input type="number" name="txtValor" id="txtValor" value="<?= $transacao['valor'] ?>" class="form-control" step="any">
                                 </div>
                             </div>
                             <div class="modal-footer mt-4">
@@ -260,21 +257,21 @@ if (isset($_POST['txtNome'])) {
                                     <select name="txtCategoria" id="txtCategoria" class="form-control" required>
                                         <option selected disabled>Selecione uma categoria</option>
                                         <option class="text-danger" disabled>Categorias de Saída</option>
-                                        <option value="Alimentação" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Alimentação' ? 'selected' : '' ?>>Alimentação</option>
-                                        <option value="Transporte" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Transporte' ? 'selected' : '' ?>>Transporte</option>
-                                        <option value="Lazer" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Lazer' ? 'selected' : '' ?>>Lazer</option>
-                                        <option value="Saúde" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Saúde' ? 'selected' : '' ?>>Saúde</option>
-                                        <option value="Compras" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Compras' ? 'selected' : '' ?>>Compras</option>
-                                        <option value="Outros" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Outros' ? 'selected' : '' ?>>Outros</option>
-                                        <option value="Aplicação em Investimentos" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Aplicação em Investimentos' ? 'selected' : '' ?>>Aplicação em Investimentos</option>
-                                        <option value="Serviços" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Serviços' ? 'selected' : '' ?>>Serviços</option>
+                                        <option value="Alimentação" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Alimentação' ? 'selected' : '' ?>>Alimentação</option>
+                                        <option value="Transporte" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Transporte' ? 'selected' : '' ?>>Transporte</option>
+                                        <option value="Lazer" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Lazer' ? 'selected' : '' ?>>Lazer</option>
+                                        <option value="Saúde" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Saúde' ? 'selected' : '' ?>>Saúde</option>
+                                        <option value="Compras" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Compras' ? 'selected' : '' ?>>Compras</option>
+                                        <option value="Outros" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Outros' ? 'selected' : '' ?>>Outros</option>
+                                        <option value="Aplicação em Investimentos" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Aplicação em Investimentos' ? 'selected' : '' ?>>Aplicação em Investimentos</option>
+                                        <option value="Serviços" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Serviços' ? 'selected' : '' ?>>Serviços</option>
                                         <option class="text-success" disabled>Categorias de Entrada</option>
-                                        <option value="Renda" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Renda' ? 'selected' : '' ?>>Renda</option>
-                                        <option value="Renda Extra" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Renda Extra' ? 'selected' : '' ?>>Renda Extra</option>
-                                        <option value="Rendimento de Investimentos" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Rendimento de Investimentos' ? 'selected' : '' ?>>Rendimento de Investimentos</option>
-                                        <option value="Doação" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Doação' ? 'selected' : '' ?>>Doação</option>
-                                        <option value="Prêmio" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Prêmio' ? 'selected' : '' ?>>Prêmio</option>
-                                        <option value="Outros" <?= isset($transacao['categoria']) && $transacao['categoria'] == 'Outros' ? 'selected' : '' ?>>Outros</option>
+                                        <option value="Renda" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Renda' ? 'selected' : '' ?>>Renda</option>
+                                        <option value="Renda Extra" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Renda Extra' ? 'selected' : '' ?>>Renda Extra</option>
+                                        <option value="Rendimento de Investimentos" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Rendimento de Investimentos' ? 'selected' : '' ?>>Rendimento de Investimentos</option>
+                                        <option value="Doação" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Doação' ? 'selected' : '' ?>>Doação</option>
+                                        <option value="Prêmio" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Prêmio' ? 'selected' : '' ?>>Prêmio</option>
+                                        <option value="Outros" <?= isset($movimentacao['categoria']) && $movimentacao['categoria'] == 'Outros' ? 'selected' : '' ?>>Outros</option>
                                     </select>
                                 </div>
 
@@ -309,6 +306,30 @@ if (isset($_POST['txtNome'])) {
 
 
 
+        <?php foreach ($movimentacoes as $movimentacao) { ?>
+            <div class="modal fade" id="modalExcluirMovimentacao_<?= $movimentacao['id'] ?>" tabindex="-1" aria-labelledby="modalExcluirMovimentacao_<?= $movimentacao['id'] ?>" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-white" id="modalExcluirMovimentacao_<?= $movimentacao['id'] ?>">Excluir Movimentação</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="" method="POST">
+                            <div class="modal-body text-white">
+                                <p>Tem certeza de que deseja excluir a movimentação selecionada?</p>
+                                <input type="hidden" name="excluir_movimentacao" value="<?= $movimentacao['id'] ?>">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+
+
         <script>
             // Dados para o gráfico
             var entradas = <?php echo $resumo['entradas']; ?>;
@@ -318,20 +339,20 @@ if (isset($_POST['txtNome'])) {
             // Configuração do gráfico de barras horizontais
             var ctx = document.getElementById('graficoMovimentacoes').getContext('2d');
             var chart = new Chart(ctx, {
-                type: 'bar', 
+                type: 'bar',
                 data: {
-                    labels: ['Entradas', 'Saídas', 'Saldo'], 
+                    labels: ['Entradas', 'Saídas', 'Saldo'],
                     datasets: [{
                         label: 'Movimentações',
-                        data: [entradas, saidas, saldo_final], 
-                        backgroundColor: ['rgba(40, 167, 69, 0.6)', 'rgba(220, 53, 69, 0.6)', 'rgba(0, 123, 255, 0.6)'], 
-                        borderColor: ['rgba(40, 167, 69, 1)', 'rgba(220, 53, 69, 1)', 'rgba(0, 123, 255, 1)'], 
+                        data: [entradas, saidas, saldo_final],
+                        backgroundColor: ['rgba(40, 167, 69, 0.6)', 'rgba(220, 53, 69, 0.6)', 'rgba(0, 123, 255, 0.6)'],
+                        borderColor: ['rgba(40, 167, 69, 1)', 'rgba(220, 53, 69, 1)', 'rgba(0, 123, 255, 1)'],
                         borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
-                    indexAxis: 'y', 
+                    indexAxis: 'y',
                     scales: {
                         x: {
                             beginAtZero: true,
